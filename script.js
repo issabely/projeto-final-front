@@ -23,35 +23,45 @@ function exemplo1() {
 }
 
 function exemplo2() {
-  alert("Vamos somar dois números!");
+  let titulo = document.querySelector('h1');
+  titulo.innerHTML = 'Jogo do número secreto';
 
-  let num1 = parseFloat(prompt("Digite o primeiro número:"));
-  let num2 = parseFloat(prompt("Digite o segundo número:"));
-
-  if (isNaN(num1) || isNaN(num2)) {
-    alert("Entrada inválida. Tente novamente.");
-    return;
-  }
-
+  let num1 = parseInt(prompt("Digite o primeiro número inteiro:"));
+  let num2 = parseInt(prompt("Digite o segundo número inteiro:"));
   let resultado = num1 + num2;
-  alert(`A soma é: ${resultado}`);
+  alert("A soma dos números é: " + resultado);
 }
 
 function exemplo3() {
   document.body.innerHTML = `
-    <h2>Formulário de Contato</h2>
-    <form onsubmit="enviarFormulario(event)">
-      <label>Nome: <input type="text" id="nome" required></label><br><br>
-      <label>Email: <input type="email" id="email" required></label><br><br>
+    <h1>Formulário</h1>
+    <form id="formulario">
+      <label>Valor 1: <input type="text" id="valor1"></label><br>
+      <label>Valor 2: <input type="text" id="valor2"></label><br>
+      <label>Valor 3: <input type="text" id="valor3"></label><br>
+      <label>Valor 4: <input type="text" id="valor4"></label><br>
+      <label>Valor 5: <input type="text" id="valor5"></label><br>
       <button type="submit">Enviar</button>
     </form>
   `;
-}
 
-function enviarFormulario(event) {
-  event.preventDefault();
-  const nome = document.getElementById('nome').value;
-  const email = document.getElementById('email').value;
-  alert(`Obrigado, ${nome}! Recebemos seu contato (${email}).`);
-  location.reload();
+  document.getElementById("formulario").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const valores = [];
+    for (let i = 1; i <= 5; i++) {
+      const valor = document.getElementById(`valor${i}`).value.trim();
+      if (valor === "") {
+        alert(`O campo Valor ${i} está vazio.`);
+        return;
+      }
+      valores.push(valor);
+    }
+
+    const conteudo = valores.map((v, i) => `Valor ${i + 1}: ${v}`).join("\\n");
+    const blob = new Blob([conteudo], { type: "text/plain;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "valores.txt";
+    link.click();
+  });
 }
